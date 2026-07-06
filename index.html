@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RepoGalaxy</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/3d-force-graph"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="RepoGalaxy">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <h1>RepoGalaxy</h1>
+            <p>Public GitHub repositories as a 3D graph</p>
+          </div>
+        </div>
+
+        <form class="username-form" id="usernameForm">
+          <label class="sr-only" for="usernameInput">GitHub username</label>
+          <input
+            id="usernameInput"
+            name="username"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="GitHub username"
+          >
+          <button class="primary-button" id="visualizeButton" type="submit">
+            Visualize
+          </button>
+        </form>
+
+        <div class="top-actions">
+          <button class="secondary-button" id="screenshotButton" type="button">
+            Screenshot
+          </button>
+          <button class="secondary-button" id="themeButton" type="button">
+            Theme
+          </button>
+          <button class="secondary-button" id="settingsButton" type="button">
+            Settings
+          </button>
+        </div>
+      </header>
+
+      <main class="graph-stage" aria-label="Repository graph">
+        <div id="graph" class="graph-canvas"></div>
+
+        <section class="empty-state" id="emptyState">
+          <h2>Enter a username above to begin</h2>
+          <p>Repo nodes connect when they share a primary language or topic.</p>
+        </section>
+
+        <section class="status-strip" aria-live="polite" aria-atomic="true">
+          <span class="spinner" id="loadingSpinner" hidden></span>
+          <span id="statusText">GitHub API: 60 requests/hour without a token.</span>
+          <span id="rateLimitText"></span>
+        </section>
+
+        <aside class="control-panel" aria-label="Graph controls">
+          <label class="field">
+            <span>Highlight</span>
+            <input
+              id="highlightInput"
+              type="search"
+              autocomplete="off"
+              placeholder="language or topic"
+            >
+          </label>
+
+          <label class="range-field">
+            <span>Minimum stars <strong id="minStarsValue">0</strong></span>
+            <input id="minStarsRange" type="range" min="0" max="50" value="0">
+          </label>
+
+          <div class="segmented" role="group" aria-label="Connection mode">
+            <button class="is-active" type="button" data-link-mode="both">All</button>
+            <button type="button" data-link-mode="language">Language</button>
+            <button type="button" data-link-mode="topic">Topic</button>
+          </div>
+
+          <dl class="stats-list">
+            <div>
+              <dt>Repos</dt>
+              <dd id="repoCount">0</dd>
+            </div>
+            <div>
+              <dt>Links</dt>
+              <dd id="linkCount">0</dd>
+            </div>
+            <div>
+              <dt>Visible</dt>
+              <dd id="visibleCount">0</dd>
+            </div>
+          </dl>
+        </aside>
+
+        <aside class="legend-panel" id="legendPanel" aria-label="Language legend" hidden>
+          <h2>Languages</h2>
+          <div class="legend-list" id="legendList"></div>
+        </aside>
+
+        <aside class="repo-panel" id="repoPanel" aria-live="polite" hidden></aside>
+
+        <aside class="fps-panel" aria-label="Performance settings">
+          <div class="fps-readouts">
+            <span>Detected <strong id="refreshRateLabel">Measuring...</strong></span>
+            <span>FPS <strong id="fpsLabel">--</strong></span>
+            <span>Graph <strong id="graphFpsLabel">--</strong></span>
+          </div>
+          <div class="fps-buttons" role="group" aria-label="FPS cap">
+            <button type="button" data-fps-cap="60">60</button>
+            <button type="button" data-fps-cap="120">120</button>
+            <button type="button" data-fps-cap="150">150</button>
+            <button class="is-active" type="button" data-fps-cap="max">Max</button>
+          </div>
+          <p id="fpsWarning" hidden></p>
+          <p id="performanceNote">Bottleneck: waiting for graph data.</p>
+        </aside>
+      </main>
+    </div>
+
+    <dialog class="settings-dialog" id="settingsDialog">
+      <form method="dialog" class="settings-form">
+        <header>
+          <h2 id="settingsTitle">GitHub API Settings</h2>
+          <button class="icon-close" value="cancel" aria-label="Close settings">x</button>
+        </header>
+        <p>
+          A personal access token is optional. It stays in this browser and is sent only to
+          api.github.com.
+        </p>
+        <label class="field">
+          <span>Personal access token</span>
+          <input
+            id="tokenInput"
+            type="password"
+            autocomplete="off"
+            placeholder="Optional token"
+          >
+        </label>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="clearTokenButton" type="button">Clear</button>
+          <button class="primary-button" id="saveTokenButton" type="button">Save</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
