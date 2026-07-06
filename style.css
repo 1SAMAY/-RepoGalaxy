@@ -132,8 +132,43 @@ input:disabled {
 
 .username-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 8px;
+}
+
+.input-mode-toggle,
+.view-buttons {
+  display: grid;
+  gap: 6px;
+}
+
+.input-mode-toggle {
+  grid-template-columns: repeat(2, minmax(74px, auto));
+}
+
+.input-mode-toggle button,
+.view-buttons button {
+  min-height: 40px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  font-size: 0.78rem;
+}
+
+:root[data-theme="light"] .input-mode-toggle button,
+:root[data-theme="light"] .view-buttons button {
+  background: rgba(17, 23, 35, 0.05);
+}
+
+.input-mode-toggle button.is-active,
+.view-buttons button.is-active {
+  border-color: transparent;
+  background: var(--accent);
+  color: #03110f;
+  font-weight: 700;
 }
 
 .username-form input,
@@ -290,6 +325,7 @@ input:disabled {
 .control-panel,
 .legend-panel,
 .repo-panel,
+.architecture-panel,
 .fps-panel {
   position: absolute;
   z-index: 6;
@@ -336,6 +372,14 @@ input:disabled {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
+}
+
+.view-buttons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.load-more-button {
+  width: 100%;
 }
 
 .segmented button {
@@ -426,6 +470,48 @@ input:disabled {
   bottom: 74px;
   width: min(360px, calc(100vw - 32px));
   padding: 14px;
+}
+
+.architecture-panel {
+  right: 16px;
+  bottom: 74px;
+  width: min(380px, calc(100vw - 32px));
+  max-height: 44vh;
+  padding: 14px;
+  overflow: auto;
+}
+
+.architecture-panel h2 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.architecture-summary {
+  display: grid;
+  gap: 10px;
+}
+
+.architecture-summary section {
+  border-top: 1px solid var(--line);
+  padding-top: 9px;
+}
+
+.architecture-summary h3 {
+  margin: 0 0 6px;
+  font-size: 0.84rem;
+}
+
+.architecture-summary p,
+.architecture-summary ul {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.architecture-summary ul {
+  padding-left: 17px;
 }
 
 .fps-panel {
@@ -530,6 +616,28 @@ input:disabled {
   margin-top: 10px;
 }
 
+.detail-grid {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.detail-grid div {
+  min-width: 0;
+}
+
+.detail-grid dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.detail-grid dd {
+  margin: 2px 0 0;
+  color: var(--text);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
 .settings-dialog {
   width: min(460px, calc(100vw - 32px));
   border: 1px solid var(--line);
@@ -622,6 +730,10 @@ input:disabled {
     grid-template-columns: 1fr;
   }
 
+  .username-form {
+    grid-template-columns: 1fr;
+  }
+
   .top-actions {
     justify-content: stretch;
   }
@@ -646,6 +758,14 @@ input:disabled {
   .fps-panel {
     bottom: 74px;
   }
+
+  .architecture-panel {
+    top: auto;
+    right: 16px;
+    bottom: 180px;
+    width: min(360px, calc(100vw - 32px));
+    max-height: 180px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -660,6 +780,11 @@ input:disabled {
   .username-form,
   .top-actions {
     grid-template-columns: 1fr;
+  }
+
+  .input-mode-toggle,
+  .view-buttons {
+    grid-template-columns: 1fr 1fr;
   }
 
   .control-panel {
@@ -679,7 +804,8 @@ input:disabled {
     max-height: 78px;
   }
 
-  .repo-panel {
+  .repo-panel,
+  .architecture-panel {
     left: 12px;
     right: 12px;
     bottom: 258px;

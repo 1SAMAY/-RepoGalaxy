@@ -21,6 +21,10 @@
         </div>
 
         <form class="username-form" id="usernameForm">
+          <div class="input-mode-toggle" role="group" aria-label="Input mode">
+            <button class="is-active" type="button" data-input-mode="username">Username</button>
+            <button type="button" data-input-mode="repo">Repo URL</button>
+          </div>
           <label class="sr-only" for="usernameInput">GitHub username</label>
           <input
             id="usernameInput"
@@ -85,17 +89,31 @@
             <button type="button" data-link-mode="topic">Topic</button>
           </div>
 
+          <div class="view-buttons" role="group" aria-label="Graph view mode">
+            <button class="is-active" type="button" data-view-mode="galaxy">Galaxy View</button>
+            <button type="button" data-view-mode="project">Project Universe</button>
+            <button type="button" data-view-mode="architecture">Architecture View</button>
+            <button type="button" data-view-mode="pipeline">Pipeline View</button>
+            <button type="button" data-view-mode="critical">Critical Files</button>
+            <button type="button" data-view-mode="dependencies">Dependencies</button>
+            <button type="button" data-view-mode="security">Security Hotspots</button>
+          </div>
+
+          <button class="secondary-button load-more-button" id="loadMoreButton" type="button" hidden>
+            Load more files
+          </button>
+
           <dl class="stats-list">
             <div>
-              <dt>Repos</dt>
+              <dt id="primaryStatLabel">Repos</dt>
               <dd id="repoCount">0</dd>
             </div>
             <div>
-              <dt>Links</dt>
+              <dt id="secondaryStatLabel">Links</dt>
               <dd id="linkCount">0</dd>
             </div>
             <div>
-              <dt>Visible</dt>
+              <dt id="visibleStatLabel">Visible</dt>
               <dd id="visibleCount">0</dd>
             </div>
           </dl>
@@ -107,6 +125,11 @@
         </aside>
 
         <aside class="repo-panel" id="repoPanel" aria-live="polite" hidden></aside>
+
+        <aside class="architecture-panel" id="architecturePanel" hidden>
+          <h2>Architecture Summary</h2>
+          <div id="architectureSummary"></div>
+        </aside>
 
         <aside class="fps-panel" aria-label="Performance settings">
           <div class="fps-readouts">
